@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpassword"  # Set a secure password here
+      MYSQL_DATABASE: lodgingdb
+    ports:
+      - "3306:3306"  # Expose port 3306 for MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+  eureka:
+    build:
+      context: ./EurekaBestTrip
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
+  logement:
+    build:
+      context: ./logement
+    container_name: logement
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/lodgingdb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "rootpassword"  # Same password as MySQL root
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - eureka
+
+  apigateway:
+    build:
+      context: ./ApiGatewayBestTrip
+    container_name: apigateway
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    ports:
+      - "8090:8090"
+    depends_on:
+      - eureka
+      - logement
+
+  angular:
+    image: node:16
+    container_name: angular
+    working_dir: /app
+    volumes:
+      - ./lodging-management-frontend:/app  # Ensure this path is correct
+    command: ["npm", "start"]
+    ports:
+      - "4200:4200"
+    depends_on:
+      - apigateway
+
+volumes:
+  mysql_data: {}  # Volumes are managed here, this will persist MySQL data
