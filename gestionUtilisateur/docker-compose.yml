@@ -1,0 +1,25 @@
+
+services:
+  frontend:
+    build:
+      context: ./frontend   # Contexte de build
+      dockerfile: Dockerfile # Spécifier explicitement le Dockerfile
+    image: hammoudihayfa/gestion-utilisateur-frontend  # Nom de l'image générée
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend/src  # Contexte de build pour le backend
+      dockerfile: Dockerfile # Si vous avez un Dockerfile spécifique pour le backend
+    image: hammoudihayfa/gestion-utilisateur-backend  # Nom de l'image générée
+    ports:
+      - "8086:8086"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

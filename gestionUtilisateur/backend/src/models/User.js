@@ -1,7 +1,7 @@
+// User.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../database');
+const sequelize = require('../database');  // Assurez-vous que sequelize est correctement importé
 
-// Définir le modèle User
 const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,

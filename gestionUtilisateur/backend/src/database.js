@@ -1,13 +1,14 @@
+// database.js
+require('dotenv').config();  // Charger les variables d'environnement
+
 const { Sequelize } = require('sequelize');
 
-// Créer une connexion à la base de données PostgreSQL
-const sequelize = new Sequelize('mydatabase', 'myuser', 'admin', {
-    host: 'localhost',
-    dialect: 'postgres'
-});
+// Assurez-vous que process.env.DB_URL est bien défini
+if (!process.env.DB_URL) {
+    throw new Error('DB_URL is not defined in environment variables');
+}
 
-sequelize.authenticate()
-    .then(() => console.log('Database is connected'))
-    .catch(err => console.log('Unable to connect to the database:', err));
+// Initialiser Sequelize avec l'URL de la base de données
+const sequelize = new Sequelize(process.env.DB_URL);
 
 module.exports = sequelize;
