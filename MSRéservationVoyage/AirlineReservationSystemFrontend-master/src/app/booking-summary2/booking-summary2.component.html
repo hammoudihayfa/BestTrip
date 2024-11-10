@@ -1,0 +1,27 @@
+<div class="container mt-50">
+    <div class="card">
+      <div class="card-header">
+        <h4>Résumé de la réservation</h4>
+      </div>
+      <div class="card-body">
+        <div *ngIf="passenger">
+          <p>Passager ajouté avec succès !</p>
+          <hr>
+          <h5>Détails du passager :</h5>
+          <p><strong>Nom :</strong> {{ passenger?.nom }}</p>
+          <p><strong>Prénom :</strong> {{ passenger?.prenom }}</p>
+          <p><strong>Email :</strong> {{ passenger?.email }}</p>
+          <p><strong>Âge :</strong> {{ passenger?.age }}</p>
+          <p><strong>Sexe :</strong> {{ passenger?.sex }}</p>
+          <p><strong>Numéro de siège :</strong> {{ passenger?.seatNumber }}</p>
+          <p><strong>Préférence alimentaire :</strong> {{ passenger?.foodPreferences?.join(', ') || 'Aucune' }}</p>
+          <hr>
+          <button class="btn btn-primary" (click)="confirmBooking()">Confirmer la réservation</button>
+        </div>
+  
+        <div *ngIf="!passenger">
+          <p>Aucun passager trouvé. Veuillez ajouter un passager.</p>
+        </div>
+      </div>
+    </div>
+</div>

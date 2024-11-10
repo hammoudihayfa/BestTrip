@@ -1,0 +1,56 @@
+<div class="container">
+    <h2>Ajouter un Passager</h2>
+    <form (ngSubmit)="onSubmit()" #passengerForm="ngForm">
+      <div class="form-group">
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" [(ngModel)]="passenger.nom" name="nom" required class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label for="prenom">Prénom:</label>
+        <input type="text" id="prenom" [(ngModel)]="passenger.prenom" name="prenom" required class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" [(ngModel)]="passenger.email" name="email" required class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="age">Âge:</label>
+        <input type="number" id="age" [(ngModel)]="passenger.age" name="age" required class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="sex">Sexe:</label>
+        <select id="sex" [(ngModel)]="passenger.sex" name="sex" required class="form-control">
+          <option value="" disabled selected>Choisissez...</option>
+          <option value="male">Homme</option>
+          <option value="female">Femme</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="foodPreferences">Préférences Alimentaires:</label>
+        <select id="foodPreferences" [(ngModel)]="passenger.foodPreferences" name="foodPreferences" multiple class="form-control">
+          <option value="Végétarien">Végétarien</option>
+          <option value="Vegan">Vegan</option>
+          <option value="Sans Gluten">Sans Gluten</option>
+          <option value="Carnivore">Carnivore</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="seatNumber">Numéro de Siège:</label>
+        <input type="text" id="seatNumber" [(ngModel)]="passenger.seatNumber" name="seatNumber" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="tripId">ID du Voyage:</label>
+        <input type="number" id="tripId" [(ngModel)]="passenger.tripId" name="tripId" required class="form-control">
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="!passengerForm.form.valid">Ajouter Passager</button>
+    </form>
+  </div>
+  

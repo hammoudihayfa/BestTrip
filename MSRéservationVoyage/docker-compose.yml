@@ -1,0 +1,90 @@
+services:
+  eureka-server:
+    build:
+      context: ./eurekaMs
+      dockerfile: Dockerfile
+    image: hammoudihayfa/eureka
+    container_name: eureka_serviceProject
+    ports:
+      - "8762:8761"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    volumes:
+      - eureka-data:/var/lib/eureka-data  
+
+  api-gateway:
+    build:
+      context: ./apiGateway
+      dockerfile: Dockerfile
+    image: hammoudihayfa/apigateway
+    container_name: apigatewayProject
+    ports:
+      - "8096:8096"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      - eureka-server
+      - best-trip-back
+    volumes:
+      - gateway-logs:/var/log/api-gateway  
+
+  best-trip-back:
+    build:
+      context: ./BestTripBack
+      dockerfile: Dockerfile  
+    image: hammoudihayfa/besttripback
+    container_name: besttripback
+    ports:
+      - "8087:8086"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      - eureka-server
+    volumes:
+      - backend-data:/var/lib/besttripback  
+
+  frontend:
+    build:
+      context: ./AirlineReservationSystemFrontend-master
+      dockerfile: Dockerfile  
+    image: hammoudihayfa/frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    volumes:
+      - frontend-data:/var/www/html 
+
+  keycloak:
+    image: keycloak/keycloak
+    container_name: keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    command:
+      - start-dev
+
+  config-server:
+    build:
+      context: ./ConfigServerProj   
+      dockerfile: Dockerfile        
+    image: hammoudihayfa/configserver
+    container_name: config-server
+    ports:
+      - "8888:8888"                
+    environment:
+      - SPRING_PROFILES_ACTIVE=native
+      - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=classpath:/config
+      - SPRING_APPLICATION_NAME=ConfigServerProj
+    volumes:
+      - config-data:/config        
+    depends_on:
+      - eureka-server
+
+volumes:
+  eureka-data:
+  gateway-logs:
+  backend-data:
+  frontend-data:
+  config-data:
