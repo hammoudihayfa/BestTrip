@@ -46,4 +46,9 @@ public class LodgingController {
         return response != null ? new ResponseEntity<>(response, HttpStatus.OK)
                 : new ResponseEntity<>("Lodging not found", HttpStatus.NOT_FOUND);
     }
+    // Display hello message
+    @GetMapping("/hello")
+    public ResponseEntity<String> getGreeting() {
+        return new ResponseEntity<>("Hello AsmaBestTrip", HttpStatus.OK);
+    }
 }
