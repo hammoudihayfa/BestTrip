@@ -17,7 +17,7 @@ public class ApiGatewayBestTripApplication {
                 public RouteLocator gattewayRoutes(RouteLocatorBuilder builder) {
             return builder.routes()
                     .route("Logement", r -> r.path("/lodgings/**")
-                            .uri("http://localhost:8081"))
+                            .uri("http://logement:8081"))
                     .build();
 
 
