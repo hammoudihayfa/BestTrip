@@ -8,7 +8,7 @@ import { Lodging } from '../lodging.model';  // Import your Lodging interface
   providedIn: 'root'
 })
 export class LodgingService {
-  private apiUrl = 'http://localhost:8081/lodgings'; // Backend endpoint
+  private apiUrl = 'http://logement:8081/lodgings'; // Backend endpoint
 
   constructor(private http: HttpClient) {}
 
